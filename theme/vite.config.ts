@@ -12,9 +12,7 @@ export default defineConfig({
             keycloakVersionTargets: {
                 "22-to-25": false,
                 "all-other-versions": "gepardec-login-theme.jar"
-            },
-            // Output directly to repo's providers folder
-            // keycloakifyBuildDirPath: "../providers"
+            }
         })
     ]
 });
