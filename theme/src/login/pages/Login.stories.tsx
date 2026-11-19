@@ -377,3 +377,13 @@ export const WithAuthPassKey: Story = {
         />
     )
 };
+
+export const InGerman: Story = {
+    render: () => (
+        <KcPageStory
+            kcContext={{
+                locale: { currentLanguageTag: "de" }
+            }}
+        />
+    )
+};

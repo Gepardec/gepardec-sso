@@ -12,7 +12,7 @@ context: |
   - Styling: Global stylesheet in `theme/src/login/main.css` imported in `theme/src/login/KcPage.tsx`. Prefer targeting Keycloakify's stable `.kc*` hook classes (e.g., `.kcLoginClass`, `.kcFormCardClass`, `.kcButtonPrimaryClass`) over ejecting templates.
   - Markup Overrides: Only eject pages (`npx --prefix theme keycloakify eject-page -p theme`) when HTML structure must change beyond what CSS and i18n support.
   - Localization: Custom labels and translations live in `theme/src/login/i18n.ts` via `i18nBuilder.withCustomTranslations(...)` (never legacy `.properties` files).
-  - Static Assets: Logos, backgrounds, and fonts live in `theme/src/assets/` and are imported via relative paths in CSS or TSX (never in `theme/public/`).
+  - Static Assets: Logos, backgrounds, and fonts live in `theme/src/login/assets/img/` and are imported via relative paths in CSS or TSX (never in `theme/public/`).
   - Preview & Verification: Storybook stories in `theme/src/login/pages/*.stories.tsx` (`npm --prefix theme run storybook`) and local Keycloak 26 container testing (`npx --prefix theme keycloakify start-keycloak -p theme`).
 
   ## Commands
