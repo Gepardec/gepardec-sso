@@ -14,7 +14,7 @@ export default defineConfig({
                 "all-other-versions": "gepardec-login-theme.jar"
             },
             // Output directly to repo's providers folder
-            keycloakifyBuildDirPath: "../providers"
+            // keycloakifyBuildDirPath: "../providers"
         })
     ]
 });
