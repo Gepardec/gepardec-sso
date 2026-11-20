@@ -39,6 +39,11 @@ podman run -e KC_DB_PASSWORD=keycloak@123 \
            start --optimized --verbose
 ```
 
+**Keycloak mit keycloak-config-cli konfigurieren:**
+```shell
+cd ../gepardec-sso-config-ci/ && podman run --rm --name gepardec-sso-config-cli --network=gepardec-sso -e KEYCLOAK_URL="http://gepardec-sso:8080/" -e KEYCLOAK_USER="admin" -e KEYCLOAK_PASSWORD=admin@123 -e KEYCLOAK_AVAILABILITYCHECK_ENABLED=true -e IMPORT_MANAGED_CLIENT=no-delete -e KEYCLOAK_AVAILABILITYCHECK_TIMEOUT=120s -e IMPORT_FILES_LOCATIONS='/config/*' -v ./apps/appuio/qa/configs:/config quay.io/adorsys/keycloak-config-cli:6.5.1-26.5.5
+```
+
 # Keycloakify Login Theme
 
 The Gepardec login theme lives in [`theme/`](theme/) and is built with [Keycloakify](https://keycloakify.dev) v11: a React + TypeScript + Vite project that is compiled into a regular Keycloak theme JAR (`gepardec-login-theme.jar`, theme name `gepardec`). It only customises the **login** theme; account, admin and email themes are not implemented.
