@@ -1,0 +1,51 @@
+schema: spec-driven
+
+context: |
+  ## Repository & Architecture
+  - Monorepo containing all Keycloak customizations (custom SPIs, realm configs, container build, and login theme).
+  - The custom login theme lives in the `theme/` subfolder as an isolated Node/Vite project.
+  - The themes in /theme are created using Keycloakify.
+  - Build outputs are JARs in the /provider directory. From there they are copied into the Keycloak container at build time.
+
+  ## Keycloakify Theme Stack (`theme/`)
+  - Framework: Keycloakify v11+, React, TypeScript (strict), Vite.
+  - Styling: Global stylesheet in `theme/src/login/main.css` imported in `theme/src/login/KcPage.tsx`. Prefer targeting Keycloakify's stable `.kc*` hook classes (e.g., `.kcLoginClass`, `.kcFormCardClass`, `.kcButtonPrimaryClass`) over ejecting templates.
+  - Markup Overrides: Only eject pages (`npx --prefix theme keycloakify eject-page -p theme`) when HTML structure must change beyond what CSS and i18n support.
+  - Localization: Custom labels and translations live in `theme/src/login/i18n.ts` via `i18nBuilder.withCustomTranslations(...)` (never legacy `.properties` files).
+  - Static Assets: Logos, backgrounds, and fonts live in `theme/src/login/assets/img/` and are imported via relative paths in CSS or TSX (never in `theme/public/`).
+  - Preview & Verification: Storybook stories in `theme/src/login/pages/*.stories.tsx` (`npm --prefix theme run storybook`) and local Keycloak 26 container testing (`npx --prefix theme keycloakify start-keycloak -p theme`).
+
+  ## Commands
+  - Typecheck & bundle check: `npm --prefix theme run build`
+  - Build Keycloak 26 JAR: `npm --prefix theme run build-keycloak-theme`
+  - Add Storybook page story: `npx --prefix theme keycloakify add-story -p theme`
+
+rules:
+  proposal:
+    - List every Keycloak FreeMarker page ID affected (e.g., `login.ftl`, `register.ftl`, `login-reset-password.ftl`).
+    - Explicitly state what is out of scope (e.g., Account console, Admin console, or backend SPI changes).
+  specs:
+    - Write requirements using RFC 2119 keywords (`SHALL`, `MUST`, `SHOULD`) and verifiable `WHEN` / `THEN` scenarios.
+    - Cover both happy-path rendering and Keycloak error/validation states (e.g., invalid credentials, expired action link, social IdP buttons).
+  design:
+    - Justify any ejected `.tsx` template (`eject-page`); default to CSS `.kc*` overrides and `i18n.ts` changes whenever possible.
+    - Specify exact file paths under `theme/src/login/` for CSS, assets, i18n keys, and ejected components.
+  tasks:
+    - Keep tasks small, sequential, and scoped to `theme/` paths.
+    - Include generating or updating Storybook stories (`add-story`) for every modified login page.
+
+operations:
+  apply:
+    guidance:
+      - Run `npm --prefix theme run build` to verify TypeScript and Vite compilation before marking tasks complete.
+      - Never commit generated files in `theme/public/keycloakify-dev-resources/` or `theme/dist_keycloak/`.
+  archive:
+    guidance:
+      - Verify `npm --prefix theme run build-keycloak-theme` succeeds before archiving the change.
+
+style-quide:
+  - gepardec colours:
+      - primary: #ffc800
+      - primary: #17181a
+      - secondary: #2b2b2b
+  - font: Barlow Semi Condensed
