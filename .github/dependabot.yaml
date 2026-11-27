@@ -6,13 +6,44 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      # Group minor and patch updates to reduce PR noise
+      # Storybook packages must share the same major version, so upgrade them together
+      storybook:
+        patterns:
+          - "storybook"
+          - "@storybook/*"
+          - "eslint-plugin-storybook"
+      # ESLint core and its plugins/configs depend on each other via peer dependencies
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "eslint-*"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
+      # Vite and its React plugin are released in lockstep
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+      # Group remaining minor and patch updates to reduce PR noise
       theme-dependencies:
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
+    # Major versions blocked by peer dependencies. These rules only affect version
+    # updates; Dependabot security updates are still raised. Remove an entry once
+    # the blocker is resolved.
+    ignore:
+      # eslint-plugin-react (7.37.x) supports ESLint 9 at most
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]
+      # typescript-eslint (8.x) supports TypeScript <6.1 only
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   # 2. Keycloak Container Image
   - package-ecosystem: "docker"
