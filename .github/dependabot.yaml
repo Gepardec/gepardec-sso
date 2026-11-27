@@ -1,0 +1,27 @@
+version: 2
+updates:
+  # 1. Keycloakify & Frontend Theme Dependencies (package.json)
+  - package-ecosystem: "npm"
+    directory: "/theme"
+    schedule:
+      interval: "weekly"
+    groups:
+      # Group minor and patch updates to reduce PR noise
+      theme-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # 2. Keycloak Container Image
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # 3. GitHub Actions CI/CD Workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
