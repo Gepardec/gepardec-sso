@@ -1,7 +1,7 @@
 ARG KEYCLOAK_VERSION=26.8.1
 
 # Build the Keycloakify theme JAR
-FROM node:25-bookworm-slim AS theme-builder
+FROM node:24-bookworm-slim AS theme-builder
 RUN apt-get update && apt-get install -y --no-install-recommends maven && rm -rf /var/lib/apt/lists/*
 WORKDIR /build/theme
 COPY theme/package*.json ./
